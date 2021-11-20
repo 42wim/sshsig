@@ -1,4 +1,21 @@
-package sshsig_test
+# Armored ssh signatures in go
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/42wim/sshsig.svg)](https://pkg.go.dev/github.com/42wim/sshsig#section-documentation)
+
+Package sshsig implements signing/verifying armored SSH signatures.
+You can use this package to sign data and verify signatures using your ssh private keys or your ssh agent.
+It gives the same output as using `ssh-keygen`, eg when signing `ssh-keygen -Y sign -f keyfile -n namespace data`
+
+This code is based upon work by <https://github.com/sigstore/rekor>
+
+References: <https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.sshsig>
+
+You can find some examples on how to use this library on: <https://pkg.go.dev/github.com/42wim/sshsig#pkg-examples>
+
+## Examples
+
+```golang
+package main
 
 import (
 	"bytes"
@@ -58,3 +75,8 @@ seX1FbzF26XqTMha4owwAAAAAAECAwQF
 	// gS4pfD73TlML1SyB5lb/YO
 	// -----END SSH SIGNATURE-----
 }
+
+func main() {
+	ExampleSign()
+}
+```
