@@ -111,6 +111,13 @@ func signAgent(pk ssh.PublicKey, ag agent.Agent, m io.Reader, ns string) (*ssh.S
 	return agExt.SignWithFlags(pk, dataMessageWrapper, sigFlag)
 }
 
+// SignWithAgent asks the ssh Agent to sign the data with the signer matching the given publicKey and returns an armored signature.
+// The purpose of the namespace value is to specify a unambiguous
+// interpretation domain for the signature, e.g. file signing.
+// This prevents cross-protocol attacks caused by signatures
+// intended for one intended domain being accepted in another.
+// If empty, the default is "file".
+// This can be compared with `ssh-keygen -Y sign -f keyfile -n namespace data`
 func SignWithAgent(publicKey []byte, ag agent.Agent, data io.Reader, namespace string) ([]byte, error) {
 	pk, _, _, _, err := ssh.ParseAuthorizedKey(publicKey)
 	if err != nil {
@@ -130,6 +137,13 @@ func SignWithAgent(publicKey []byte, ag agent.Agent, data io.Reader, namespace s
 	return armored, nil
 }
 
+// Sign signs the data with the given private key in PEM format and returns an armored signature.
+// The purpose of the namespace value is to specify a unambiguous
+// interpretation domain for the signature, e.g. file signing.
+// This prevents cross-protocol attacks caused by signatures
+// intended for one intended domain being accepted in another.
+// If empty, the default is "file".
+// This can be compared with `ssh-keygen -Y sign -f keyfile -n namespace data`
 func Sign(pemBytes []byte, data io.Reader, namespace string) ([]byte, error) {
 	s, err := ssh.ParsePrivateKey(pemBytes)
 	if err != nil {

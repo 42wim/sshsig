@@ -30,6 +30,7 @@ const (
 	pemType   = "SSH SIGNATURE"
 )
 
+// Armored returns the signature in an armored format.
 func Armor(s *ssh.Signature, p ssh.PublicKey, ns string) []byte {
 	sig := WrappedSig{
 		Version:       1,
@@ -48,6 +49,7 @@ func Armor(s *ssh.Signature, p ssh.PublicKey, ns string) []byte {
 	return enc
 }
 
+// Decode parses an armored signature.
 func Decode(b []byte) (*Signature, error) {
 	pemBlock, _ := pem.Decode(b)
 	if pemBlock == nil {

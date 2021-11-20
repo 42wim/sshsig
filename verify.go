@@ -21,6 +21,7 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+// Verify verifies the signature of the given data and the armored signature using the given public key.
 func Verify(message io.Reader, armoredSignature []byte, publicKey []byte) error {
 	decodedSignature, err := Decode(armoredSignature)
 	if err != nil {
