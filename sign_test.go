@@ -163,17 +163,17 @@ func TestFromOpenSSH(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if err := Verify(bytes.NewReader(data), sigBytes, []byte(tt.pub)); err != nil {
+			if err := Verify(bytes.NewReader(data), sigBytes, []byte(tt.pub), "file"); err != nil {
 				t.Error(err)
 			}
 
 			// It should not verify if we check against another public key
-			if err := Verify(bytes.NewReader(data), sigBytes, []byte(otherSSHPublicKey)); err == nil {
+			if err := Verify(bytes.NewReader(data), sigBytes, []byte(otherSSHPublicKey), "file"); err == nil {
 				t.Error("expected error with incorrect key")
 			}
 
 			// It should not verify if the data is tampered
-			if err := Verify(strings.NewReader("bad data"), sigBytes, []byte(sshPublicKey)); err == nil {
+			if err := Verify(strings.NewReader("bad data"), sigBytes, []byte(sshPublicKey), "file"); err == nil {
 				t.Error("expected error with incorrect data")
 			}
 		})
@@ -268,31 +268,31 @@ func TestRoundTrip(t *testing.T) {
 			}
 
 			// Check the signature against that data and public key
-			if err := Verify(bytes.NewReader(data), sig, []byte(tt.pub)); err != nil {
+			if err := Verify(bytes.NewReader(data), sig, []byte(tt.pub), "file"); err != nil {
 				t.Error(err)
 			}
 
 			// Now check it against invalid data.
-			if err := Verify(strings.NewReader("invalid data!"), sig, []byte(tt.pub)); err == nil {
+			if err := Verify(strings.NewReader("invalid data!"), sig, []byte(tt.pub), "file"); err == nil {
 				t.Error("expected error!")
 			}
 
 			// Now check it against the wrong key.
-			if err := Verify(bytes.NewReader(data), sig, []byte(otherSSHPublicKey)); err == nil {
+			if err := Verify(bytes.NewReader(data), sig, []byte(otherSSHPublicKey), "file"); err == nil {
 				t.Error("expected error!")
 			}
 
 			// Now check it against an invalid signature data.
-			if err := Verify(bytes.NewReader(data), []byte("invalid signature!"), []byte(tt.pub)); err == nil {
+			if err := Verify(bytes.NewReader(data), []byte("invalid signature!"), []byte(tt.pub), "file"); err == nil {
 				t.Error("expected error!")
 			}
 
 			// Once more, use the wrong signature and check it against the original (wrong public key)
-			if err := Verify(bytes.NewReader(data), otherSig, []byte(tt.pub)); err == nil {
+			if err := Verify(bytes.NewReader(data), otherSig, []byte(tt.pub), "file"); err == nil {
 				t.Error("expected error!")
 			}
 			// It should work against the correct public key.
-			if err := Verify(bytes.NewReader(data), otherSig, []byte(otherSSHPublicKey)); err != nil {
+			if err := Verify(bytes.NewReader(data), otherSig, []byte(otherSSHPublicKey), "file"); err != nil {
 				t.Error(err)
 			}
 		})
