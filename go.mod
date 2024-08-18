@@ -1,7 +1,7 @@
 module github.com/42wim/sshsig
 
-go 1.17
+go 1.22
 
-require golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871
+require golang.org/x/crypto v0.26.0
 
-require golang.org/x/sys v0.0.0-20211117180635-dee7805ff2e1 // indirect
+require golang.org/x/sys v0.24.0 // indirect
